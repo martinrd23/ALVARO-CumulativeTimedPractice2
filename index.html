@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Álvaro · Timed Assessment · Sessions 3 & 4</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Patrick+Hand&display=swap');
+:root{
+  --navy:#17324D;--navy2:#0D2F52;--blue:#2E8FB8;--sky:#EAF6FD;--mint:#EAF7F2;
+  --yellow:#FFD75E;--yellow2:#FFF4C7;--cream:#FFFDF8;--white:#fff;--pink:#FFF1F4;
+  --text:#17324D;--muted:#667D90;--line:#D7E3EB;--green:#2F8B69;--red:#C4535D;
+  --purple:#8E73C9;--shadow:0 12px 28px rgba(23,50,77,.10)
+}
+*{box-sizing:border-box}
+body{margin:0;background:#F4F1EA;color:var(--text);font-family:'Nunito',Arial,sans-serif}
+button{font:inherit}
+.topbar{position:sticky;top:0;z-index:30;background:linear-gradient(90deg,var(--navy2),#1B5D8C);color:#fff;box-shadow:0 4px 16px rgba(0,0,0,.12)}
+.topbar .inner{max-width:1060px;margin:auto;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.brand{font-weight:900}.brand small{display:block;font-size:11px;color:#D6E8F4;margin-top:2px}
+.progress-shell{position:sticky;top:63px;z-index:25;height:7px;background:#DCE6EC}.progress{height:100%;width:0;background:linear-gradient(90deg,#42A89D,var(--yellow));transition:.18s}
+.hero{padding:50px 20px 36px;background:linear-gradient(135deg,var(--cream) 70%,var(--sky) 70%);border-bottom:1px solid var(--line)}
+.wrap{max-width:1060px;margin:auto}
+.hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:28px;align-items:center}
+.eyebrow{font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+.hero h1{font-size:58px;line-height:.94;letter-spacing:-2px;margin:10px 0 14px}
+.hero h1 em{font-family:'Patrick Hand';font-style:normal;font-weight:400;background:linear-gradient(transparent 72%,var(--yellow) 72%)}
+.hero p{font-size:17px;font-weight:700;color:#35536B;max-width:700px}
+.note{background:var(--yellow);padding:24px;border-radius:22px;font-family:'Patrick Hand';font-size:28px;line-height:1.08;text-align:center;box-shadow:var(--shadow);transform:rotate(1deg)}
+section{padding:36px 20px}
+.info-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+.info{background:#fff;border:1px solid var(--line);border-radius:15px;padding:16px;text-align:center;box-shadow:0 5px 14px rgba(23,50,77,.05)}
+.info strong{display:block;font-size:28px}
+.lead{color:var(--muted);font-weight:700;line-height:1.55}
+.timer{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--yellow2);border:1px solid #ECD373;padding:14px;border-radius:15px;margin-bottom:14px}
+.timer strong{font-size:28px}
+.btn{border:0;border-radius:999px;padding:10px 15px;font-weight:900;cursor:pointer}
+.btn.primary{background:var(--navy);color:#fff}
+.btn.secondary{background:#fff;color:var(--navy);border:2px solid var(--navy)}
+.scorebox{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--navy);color:#fff;border-radius:16px;padding:14px 16px;margin-bottom:14px}
+.scorebox strong{font-size:26px}.mini-progress{flex:1;min-width:180px;height:9px;background:rgba(255,255,255,.18);border-radius:999px;overflow:hidden}.mini-fill{height:100%;width:0;background:var(--yellow);transition:.2s}
+.qcard{background:#fff;border:1px solid var(--line);border-radius:17px;padding:18px;margin:0 0 13px;box-shadow:0 5px 14px rgba(23,50,77,.05)}
+.qhead{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.qnum{font-size:11px;color:var(--blue);font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+.qcat{font-size:10px;font-weight:900;border-radius:999px;padding:5px 8px;background:var(--sky);color:var(--navy)}
+.qtext{font-size:15px;font-weight:900;margin:8px 0 12px}
+.options{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.option{border:2px solid #D9E4EA;background:#fff;color:var(--navy);padding:10px;border-radius:11px;text-align:left;cursor:pointer;font-weight:800}
+.option:hover:not(:disabled){border-color:var(--blue);background:#F6FBFE}
+.option.correct{border-color:var(--green);background:#EAF7F1;color:#1D6A50}
+.option.wrong{border-color:var(--red);background:#FFF0F1;color:#963844}
+.option:disabled{cursor:default}
+.feedback{display:none;margin-top:9px;border-radius:10px;padding:9px 11px;font-size:12px;font-weight:800}
+.feedback.show{display:block}.feedback.good{background:#EAF7F1;color:#1D6A50}.feedback.bad{background:#FFF0F1;color:#963844}
+.result{display:none;margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
+.result h2{margin:0 0 8px;font-size:28px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.card{border:1px solid var(--line);border-radius:15px;padding:16px;background:#fff}.card.mint{background:var(--mint)}.card.sky{background:var(--sky)}.card.yellow{background:var(--yellow2)}.card.pink{background:var(--pink)}
+.card h3{margin:0 0 6px}.card p{margin:0;line-height:1.5;font-size:13px}
+.rule{padding:14px;border-radius:14px;background:#fff;border:1px solid var(--line);margin-top:12px}
+.rule ul{margin:8px 0 0;padding-left:20px}.rule li{margin:5px 0}
+.category-table{width:100%;border-collapse:collapse;margin-top:14px}.category-table th,.category-table td{border:1px solid var(--line);padding:9px;font-size:12px;text-align:left}.category-table th{background:var(--sky)}
+.footer{background:var(--navy);color:#fff;text-align:center;padding:28px 20px}.footer strong{font-family:'Patrick Hand';font-size:30px}
+@media(max-width:800px){.hero-grid{grid-template-columns:1fr}.info-grid{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:46px}}
+@media(max-width:560px){.options,.grid2,.info-grid{grid-template-columns:1fr}.hero h1{font-size:40px}}
+
+.exam-note{background:var(--mint);border:1px solid #B8DCCB;border-radius:15px;padding:14px 16px;margin-top:14px;font-size:12px;font-weight:800;line-height:1.55}
+.hidden-area-note{font-size:10px;color:var(--muted);font-weight:800;margin-top:4px}
+.review-table{width:100%;border-collapse:collapse;margin-top:14px}
+.review-table th,.review-table td{border:1px solid var(--line);padding:9px;font-size:11px;text-align:left;vertical-align:top}
+.review-table th{background:var(--sky)}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="inner">
+    <div class="brand">English with Mr. Rengifo<small>Álvaro · Timed Assessment · Sessions 3 & 4</small></div>
+    <div><b>20 questions</b></div>
+  </div>
+</nav>
+<div class="progress-shell"><div class="progress" id="scrollProgress"></div></div>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Cumulative Timed Assessment · American English</div>
+      <h1>Sessions 3 + 4<br><em>without hints.</em></h1>
+      <p>This assessment mixes the grammar from Sessions 3 and 4 without showing grammar labels beside the questions. Read the complete sentence, identify the grammar function yourself, and choose the best answer.</p>
+    </div>
+    <div class="note">No topic labels.<br>No grammar clues.<br><b>Use the context.</b></div>
+  </div>
+</header>
+
+<section>
+<div class="wrap">
+  <p class="lead">The official exam pace is 50 questions in 60 minutes, or about <b>72 seconds per question</b>. For 20 questions, the equivalent target is <b>24 minutes</b>. The timer stops automatically when all questions are answered. If you go beyond 24 minutes, you can continue; the final feedback will use both accuracy and actual completion time.</p>
+  <div class="info-grid">
+    <div class="info"><strong>20</strong>questions</div>
+    <div class="info"><strong>24 min</strong>target time</div>
+    <div class="info"><strong>75%</strong>exam pass reference</div>
+    <div class="info"><strong>72 sec</strong>target pace / question</div>
+  </div>
+  <div class="exam-note">Assessment mode: Topic labels are intentionally hidden while you answer. The content areas are only revealed in the final feedback so your result reflects independent recognition rather than guided recognition.</div>
+</div>
+</section>
+
+<section style="background:#fff">
+<div class="wrap">
+  <div class="timer">
+    <strong id="clock">24:00</strong>
+    <button class="btn primary" id="startTimer">Start timer</button>
+    <button class="btn secondary" id="resetTimer">Reset</button>
+    <span id="timerMsg"></span>
+  </div>
+
+  <div class="scorebox">
+    <strong><span id="score">0</span>/20</strong>
+    <div class="mini-progress"><div class="mini-fill" id="fill"></div></div>
+    <span id="done">0 answered</span>
+  </div>
+
+  <div id="questions"></div>
+  <div id="result" class="result"></div>
+</div>
+</section>
+
+<footer class="footer">
+  <strong>English with Mr. Rengifo</strong>
+  <div>Álvaro · Cumulative Timed Assessment · Sessions 3–4</div>
+</footer>
+
+<script>
+const questions=[{"area":"Session 3 · Pronouns & Possession","q":"The teacher gave the instructions to Laura and ___.","o":["I","me","my","mine"],"a":1,"e":"After the preposition 'to', use the object pronoun 'me'."},{"area":"Session 4 · Adjectives & Adverbs","q":"The new employee completed the task very ___.","o":["careful","care","more careful","carefully"],"a":3,"e":"The word describes how the action was completed, so the adverb 'carefully' is required."},{"area":"Session 3 · Nouns, Articles & Existence","q":"We need ___ information before making a decision.","o":["some","an","many","a few"],"a":0,"e":"'Information' is a noncount noun. 'Some information' is correct in an affirmative statement."},{"area":"Session 4 · Comparison","q":"This exercise is ___ than the previous one.","o":["most difficult","difficult","more difficult","the most difficult"],"a":2,"e":"Two items are being compared, so use the comparative 'more difficult than'."},{"area":"Session 3 · Nouns, Articles & Existence","q":"There are three ___ waiting outside.","o":["childs","child","children","childrens"],"a":2,"e":"'Children' is the irregular plural of 'child'."},{"area":"Session 4 · Quantifiers & Intensifiers","q":"There isn't ___ time left before the meeting.","o":["much","many","a few","few"],"a":0,"e":"'Time' is noncount, so 'much' is correct in a negative sentence."},{"area":"Session 3 · Pronouns & Possession","q":"These keys belong to Daniela. They are ___.","o":["her","she","their","hers"],"a":3,"e":"'Hers' is a possessive pronoun and can stand alone without a noun."},{"area":"Session 4 · Adjectives & Adverbs","q":"Which word means 'not honest'?","o":["unhonest","dishonest","inhonest","imhonest"],"a":1,"e":"'Dishonest' is the standard adjective meaning 'not honest'."},{"area":"Session 3 · Nouns, Articles & Existence","q":"___ an ATM near the entrance.","o":["There is","There are","It has","They are"],"a":0,"e":"'An ATM' is singular, so use 'There is'."},{"area":"Session 4 · Adjectives & Adverbs","q":"She ___ checks her answers before submitting the test. (about 80–90%)","o":["never","hardly ever","usually","always"],"a":2,"e":"'Usually' expresses a high but not absolute frequency, around 80–90%."},{"area":"Session 3 · Nouns, Articles & Existence","q":"I bought ___ umbrella because it was raining.","o":["a","the","—","an"],"a":3,"e":"'Umbrella' begins with a vowel sound, so use 'an'."},{"area":"Session 4 · Comparison","q":"That was the ___ part of the exam.","o":["more difficult","most difficult","difficulter","more difficulty"],"a":1,"e":"One part is being identified as the highest degree in a group, so use 'the most difficult'."},{"area":"Session 3 · Pronouns & Possession","q":"___ documents on this desk are mine. (near the speaker)","o":["That","This","These","Those"],"a":2,"e":"Use 'these' for plural things near the speaker."},{"area":"Session 4 · Adjectives & Adverbs","q":"She speaks English very ___.","o":["well","good","goodly","best"],"a":0,"e":"'Well' is the adverb needed to describe how she speaks."},{"area":"Session 3 · Nouns, Articles & Existence","q":"Which sentence is correct?","o":["I have two luggages.","I have some luggage.","I have a luggage.","I have many luggage."],"a":1,"e":"'Luggage' is normally noncount, so 'some luggage' is correct."},{"area":"Session 4 · Quantifiers & Intensifiers","q":"The room isn't large ___ for twenty people.","o":["too","so","such","enough"],"a":3,"e":"'Enough' follows an adjective: 'large enough'."},{"area":"Session 3 · Pronouns & Possession","q":"The ___ office is on the second floor. (manager)","o":["manager's","managers","manager","managers'"],"a":0,"e":"For one singular owner, use apostrophe + s: 'the manager's office'."},{"area":"Session 4 · Quantifiers & Intensifiers","q":"I have ___ close friends here, so I can ask them for help.","o":["few","little","a few","a little"],"a":2,"e":"'A few' means some and is used with plural count nouns such as 'friends'."},{"area":"Session 3 · Nouns, Articles & Existence","q":"Do you have ___ questions before we continue?","o":["some","much","a little","any"],"a":3,"e":"'Any' is common in general questions with plural count nouns."},{"area":"Session 4 · Comparison","q":"My new office is ___ than the old one.","o":["big","bigger","biggest","more big"],"a":1,"e":"'Big' forms the comparative by doubling the final consonant: 'bigger'."}];
+
+let answered=Array(questions.length).fill(false);
+let selected=Array(questions.length).fill(null);
+let score=0;
+let remaining=1440; // 24 minutes
+let elapsed=0;
+let timer=null;
+let finished=false;
+
+function render(){
+  const root=document.getElementById("questions");
+  root.innerHTML="";
+  questions.forEach((x,i)=>{
+    const d=document.createElement("div");
+    d.className="qcard";
+    d.innerHTML=`
+      <div class="qhead">
+        <div class="qnum">Question ${i+1}</div>
+      </div>
+      <div class="qtext">${x.q}</div>
+      <div class="options">
+        ${x.o.map((v,j)=>`<button class="option" data-i="${i}" data-o="${j}">${v}</button>`).join("")}
+      </div>
+      <div class="feedback" id="fb-${i}"></div>`;
+    root.appendChild(d);
+  });
+  root.querySelectorAll(".option").forEach(b=>b.addEventListener("click",()=>answer(+b.dataset.i,+b.dataset.o)));
+  updateProgress();
+}
+
+function answer(i,j){
+  if(answered[i]||finished)return;
+  answered[i]=true; selected[i]=j;
+  const q=questions[i];
+  const btns=[...document.querySelectorAll(`[data-i="${i}"]`)];
+  btns.forEach(b=>b.disabled=true);
+  const fb=document.getElementById(`fb-${i}`);
+  if(j===q.a){
+    score++;
+    btns[j].classList.add("correct");
+    fb.className="feedback show good";
+    fb.textContent="Correct. "+q.e;
+  }else{
+    btns[j].classList.add("wrong");
+    btns[q.a].classList.add("correct");
+    fb.className="feedback show bad";
+    fb.textContent="Review. "+q.e;
+  }
+  updateProgress();
+  if(answered.every(Boolean))finish();
+}
+
+function updateProgress(){
+  const done=answered.filter(Boolean).length;
+  document.getElementById("score").textContent=score;
+  document.getElementById("done").textContent=`${done} answered`;
+  document.getElementById("fill").style.width=(done/questions.length*100)+"%";
+}
+
+function drawClock(){
+  const abs=Math.max(remaining,0);
+  const m=String(Math.floor(abs/60)).padStart(2,"0");
+  const s=String(abs%60).padStart(2,"0");
+  document.getElementById("clock").textContent=`${m}:${s}`;
+}
+
+function fmt(sec){
+  return `${Math.floor(sec/60)} min ${String(sec%60).padStart(2,"0")} sec`;
+}
+
+function startTimer(){
+  if(timer||finished)return;
+  document.getElementById("timerMsg").textContent="";
+  timer=setInterval(()=>{
+    elapsed++;
+    remaining--;
+    drawClock();
+    if(remaining===0){
+      clearInterval(timer);timer=null;
+      document.getElementById("timerMsg").textContent="24-minute target reached — continue if needed. Final feedback will use your actual completion time.";
+    }
+  },1000);
+}
+
+function categorySummary(){
+  const groups={};
+  questions.forEach((q,i)=>{
+    const group=q.area;
+    if(!groups[group])groups[group]={total:0,correct:0};
+    groups[group].total++;
+    if(selected[i]===q.a)groups[group].correct++;
+  });
+  return groups;
+}
+
+function finish(){
+  finished=true;
+  if(timer){clearInterval(timer);timer=null;}
+  const incorrect=questions.length-score;
+  const pct=Math.round(score/questions.length*100);
+  const target=1440;
+  const secPerQ=Math.round(elapsed/questions.length);
+  const pacePerQ=Math.round(target/questions.length);
+
+  let paceLabel, paceText;
+  if(elapsed<=1200){
+    paceLabel="Fast pace";
+    paceText="You finished well inside the 24-minute target.";
+  }else if(elapsed<=1440){
+    paceLabel="Exam-ready pace";
+    paceText="You finished within the official exam-equivalent pace.";
+  }else if(elapsed<=1680){
+    paceLabel="Slightly over target";
+    paceText="Your pace is close, but you need a little more speed.";
+  }else{
+    paceLabel="Pacing needs attention";
+    paceText="You are using more time per question than the official exam pace allows.";
+  }
+
+  let accuracyLabel;
+  if(pct>=90)accuracyLabel="Excellent accuracy";
+  else if(pct>=80)accuracyLabel="Strong accuracy";
+  else if(pct>=75)accuracyLabel="At the exam pass threshold";
+  else if(pct>=65)accuracyLabel="Developing accuracy";
+  else accuracyLabel="Accuracy needs reinforcement";
+
+  const groups=categorySummary();
+  const weakest=Object.entries(groups).sort((a,b)=>(a[1].correct/a[1].total)-(b[1].correct/b[1].total))[0];
+  const strongest=Object.entries(groups).sort((a,b)=>(b[1].correct/b[1].total)-(a[1].correct/a[1].total))[0];
+
+  const tips=[];
+  if(pct<75)tips.push("Prioritize accuracy before trying to answer faster.");
+  if(elapsed>1440)tips.push("Work on faster recognition of noun type, modifier function and comparison clues.");
+  if(elapsed<960 && incorrect>=4)tips.push("You may be moving too quickly. Use more of your available time to verify the sentence structure.");
+  if(weakest)tips.push(`Your weakest area in this assessment was ${weakest[0]}. Review that area first.`);
+  if(strongest && strongest[0]!==weakest?.[0])tips.push(`Your strongest area was ${strongest[0]}. Keep it active through cumulative review.`);
+  if(incorrect>0)tips.push("Add repeated error patterns—not isolated slips—to the Grammar Error Bank.");
+  if(pct>=80 && elapsed<=1440)tips.push("Your current balance of speed and accuracy is strong. Maintain it as the cumulative load increases.");
+
+  const rows=Object.entries(groups).map(([k,v])=>{
+    const pc=Math.round(v.correct/v.total*100);
+    return `<tr><td>${k}</td><td>${v.correct}/${v.total}</td><td>${pc}%</td></tr>`;
+  }).join("");
+
+  const reviewRows=questions.map((q,i)=>{
+    if(selected[i]===q.a)return "";
+    return `<tr><td>${i+1}</td><td>${q.area}</td><td>${q.o[selected[i]] ?? "—"}</td><td>${q.o[q.a]}</td></tr>`;
+  }).join("");
+
+  const result=document.getElementById("result");
+  result.innerHTML=`
+    <h2>Timed Assessment Feedback</h2>
+    <p><b>Completion time:</b> ${fmt(elapsed)} · <b>Correct:</b> ${score}/20 · <b>Incorrect:</b> ${incorrect}/20 · <b>Accuracy:</b> ${pct}%</p>
+    <div class="grid2">
+      <div class="card mint"><h3>${accuracyLabel}</h3><p>${score} correct answer${score===1?"":"s"} out of 20.</p></div>
+      <div class="card sky"><h3>${paceLabel}</h3><p>${paceText}<br>Average: ${secPerQ} sec/question. Target pace: about ${pacePerQ} sec/question.</p></div>
+    </div>
+    <table class="category-table">
+      <tr><th>Area</th><th>Correct</th><th>Accuracy</th></tr>${rows}
+    </table>
+    <div class="rule"><b>Points to improve:</b><ul>${tips.map(t=>`<li>${t}</li>`).join("")}</ul></div>
+    ${incorrect>0?`<h3 style="margin-top:20px">Items to review</h3><table class="review-table"><tr><th>#</th><th>Area</th><th>Your answer</th><th>Correct answer</th></tr>${reviewRows}</table>`:""}
+  `;
+  result.style.display="block";
+  document.getElementById("timerMsg").textContent="Completed — timer stopped automatically.";
+  result.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function resetAll(){
+  if(timer){clearInterval(timer);timer=null;}
+  answered=Array(questions.length).fill(false);
+  selected=Array(questions.length).fill(null);
+  score=0;remaining=1440;elapsed=0;finished=false;
+  drawClock();
+  document.getElementById("timerMsg").textContent="";
+  document.getElementById("result").style.display="none";
+  render();
+}
+
+document.getElementById("startTimer").addEventListener("click",startTimer);
+document.getElementById("resetTimer").addEventListener("click",resetAll);
+window.addEventListener("scroll",()=>{
+  const h=document.documentElement.scrollHeight-innerHeight;
+  document.getElementById("scrollProgress").style.width=(h?scrollY/h*100:0)+"%";
+});
+
+render();drawClock();
+</script>
+</body>
+</html>
